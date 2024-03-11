@@ -1,16 +1,15 @@
+/* eslint-disable react-refresh/only-export-components */
 import axios from "axios";
-
 // backend url
-const BACKEND_URL = process.env.VITE_APP_BACKEND_URL;
+const BACKENDURL = import.meta.env.VITE_APP_BASE_URL;
 const axiosInstance = axios.create({
-  baseURL: BACKEND_URL,
+  baseURL: BACKENDURL,
   withCredentials: true,
 });
 
 axiosInstance.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("token");
-    console.log("backend url", BACKEND_URL);
     if (token) {
       config.headers["Authorization"] = `Bearer ${token}`;
     }
