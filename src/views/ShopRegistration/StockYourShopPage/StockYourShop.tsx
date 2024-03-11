@@ -37,7 +37,7 @@ import { ListingDetails } from "../../../interfaces/shopInterfaces";
 import { useParams } from "react-router-dom";
 import SuccessModal from "../../SuccessModal/SuccessModalComponent";
 import axiosInstance from "../../../utils/axiosInstance";
-import { fetchShopCategories } from "../../../api/shop";
+import { fetchProductsCategories } from "../../../api/product";
 
 const StockYourShop = () => {
   //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -76,7 +76,7 @@ const StockYourShop = () => {
 
   // fetching shop categories
   useEffect(() => {
-    fetchShopCategories().then((res) => {
+    fetchProductsCategories().then((res) => {
       setCategories(res);
     });
   }, []);
