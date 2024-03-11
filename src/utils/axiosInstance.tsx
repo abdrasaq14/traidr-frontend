@@ -1,8 +1,9 @@
 import axios from "axios";
 
 // backend url
+const BACKEND_URL = process.env.VITE_APP_BACKEND_URL;
 const axiosInstance = axios.create({
-  baseURL: "https://traidr-backend.onrender.com",
+  baseURL: BACKEND_URL,
   withCredentials: true,
 });
 
