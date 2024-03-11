@@ -60,6 +60,7 @@ function NameYourShopComponent() {
     setIsLoading(true);
     localStorage.setItem("nameYourShop", JSON.stringify(nameYourShop));
     dispatch(updatedNameYourShop(nameYourShop));
+    setIsLoading(false);
     //next();
     //console.log("checking", check);
   };
