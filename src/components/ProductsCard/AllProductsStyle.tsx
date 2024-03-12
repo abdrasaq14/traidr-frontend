@@ -21,7 +21,10 @@ export const AllProductsWrapper = styled.div`
     overflow: hidden;
   }
   .each-product-image img {
-    object-fit: contain;
+    max-width: 100%;
+    min-height: 100%;
+    max-height: 100%;
+    flex: 1;
   }
   .each-product-title {
     font-weight: 600;
