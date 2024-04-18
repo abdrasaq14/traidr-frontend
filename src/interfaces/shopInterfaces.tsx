@@ -47,6 +47,10 @@ export interface shopProductsInterface {
   productVideo: string;
   productPrice: number;
   shopId: string;
+  shopName?: string;
+  shopOwner?: string;
+  shopOwnerEmail?: string;
+  similarProducts?: shopProductsInterface[];
 }
 
 export interface shopInterface {
@@ -54,10 +58,18 @@ export interface shopInterface {
   shopCurrency: string;
   shopDescription: string;
   shopCategory: string;
+  shopImageURL: string;
   shopCountry: string;
   shopStreetAddress: string;
   shopCity: string;
   shopState: string;
   shopZipCode: string;
   shopOwner: string;
+}
+
+export interface ShopOwnerDetails{
+  email: string;
+  name:string;
+  phoneNumber:number|null;
+  profilePic: string|undefined|null;
 }

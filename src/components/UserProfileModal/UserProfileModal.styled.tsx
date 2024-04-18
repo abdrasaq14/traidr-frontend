@@ -1,16 +1,19 @@
 import styled from "styled-components";
 
 export const UserProfileModalContainer = styled.div`
+  background-color: white;
   width: 20rem;
-  height: 41vh;
+  min-height: 5rem;
   border-radius: 4px;
   position: fixed;
   overflow: hidden;
+  padding-bottom: 1rem;
   top: 10%;
-  right: 3rem;
-  z-index: 99;
+  right: 2rem;
+  z-index: 1000;
   text-decoration: none;
   box-shadow: -5px 0px 10px 0px rgba(0, 0, 0, 0.1);
+  animation: modal-animation 0.3s ease-in-out;
   &:focus,
   &:hover,
   &:visited,
@@ -18,26 +21,30 @@ export const UserProfileModalContainer = styled.div`
   &:active {
     text-decoration: none;
   }
+  @keyframes modal-animation {
+    0% {
+      opacity: 0;
+      height: 1rem;
+    }
+    100% {
+      opacity: 1;
+      height: 45vh;
+      min-height: 45vh;
+    }
+  }
 `;
 
 export const ModalHeader = styled.div`
   display: flex;
+  align-items: center;
+  justify-content: space-between;
   background-color: var(--orange-color);
-  padding-bottom: 1.5vh;
-  padding-left: 1rem;
+  padding: 1rem;
 
   .user-profile-modal-user-image-container {
-    margin-top: 1vh;
-    background-color: grey;
-    height: 7vh;
     border-radius: 100%;
     margin-right: 1rem;
     /* border: 1px solid pink; */
-  }
-
-  .user-profile-modal-user-image {
-    width: 60px;
-    height: 60px;
   }
 
   .user-profile-modal-user-info-container {
@@ -49,8 +56,10 @@ export const ModalHeader = styled.div`
   }
 
   .user-profile-modal-user-name {
-    margin: 1vh 0;
-    font-size: 1.5vw;
+    margin-bottom: 0;
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #ffffff
   }
 
   .user-profile-modal-user-visit-profile {
@@ -67,14 +76,10 @@ export const ModalHeader = styled.div`
 
 export const ModalBody = styled.div`
   background-color: white;
-  height: 30vh;
-  padding: 1vh 1rem;
+  padding: 1rem;
   /* border: 3px solid gold; */
   a {
     text-decoration: none;
-  }
-  .user-profile-modal-link-container {
-    margin-bottom: 2vh;
   }
 
   .user-profile-modal-link-text-and-icon-container {
@@ -96,5 +101,6 @@ export const ModalBody = styled.div`
   }
   .user-profile-modal-link-text:hover {
     font-size: 1.1vw;
+    color: #e04f16;
   }
 `;

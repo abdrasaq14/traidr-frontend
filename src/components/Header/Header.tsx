@@ -1,28 +1,38 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import userDataInterface from "../../interfaces/userInterface.tsx";
 import traidrLogo from "../../assets/traidr-logo-orange.png";
+import CartCounter from "../CartCounter/CartCounter.tsx";
 import "./HeaderStyle.tsx";
 import HeaderStyle from "./HeaderStyle.tsx";
-import { Link, useParams } from "react-router-dom";
-import { useLocation } from "react-router-dom";
-import { BsBell } from "react-icons/bs";
+import { Link } from "react-router-dom";
 import { useState } from "react";
-import { FaUserCircle } from "react-icons/fa";
+import { FaRegUser } from "react-icons/fa";
 import { useSelector } from "react-redux";
-
+import { MdKeyboardArrowDown } from "react-icons/md";
 import UserProfileModal from "../UserProfileModal/UserProfileModal.tsx";
+// import { fetchUserShopDetails } from "../../api/users.ts";
 
 interface userState {
   user: userDataInterface;
 }
 export default function Header() {
-  const { shopId } = useParams();
-  const [notificationCount, setNotificationCount] = useState(0);
+  // const reviewer = useSelector((state: userDataInterface) => state.userId);
+
+  // const [notificationCount, setNotificationCount] = useState(0);
   const token = localStorage.getItem("token");
-  const products = localStorage.getItem("shopProducts");
-  const handleNotificationClick = () => {
-    setNotificationCount(0);
-  };
-  const location = useLocation();
+  // const isSeller = useSelector((state: userState) => state.user.isSeller);
+  // const [shopIdFromBackend, setShopIdFromBackend] = useState("");
+  const [isRotate, setIsRotate] = useState(false);
+  // useEffect(() => {
+  //   if (isSeller) {
+  //     fetchUserShopDetails().then((res) => {
+  //       setShopIdFromBackend(res);
+  //     });
+  //   }
+  // });
+  // const handleNotificationClick = () => {
+  //   setNotificationCount(0);
+  // };
   const userData = useSelector((state: userState) => state.user);
   // useEffect(() => {
 
@@ -31,12 +41,15 @@ export default function Header() {
   const [profileModalVisibility, setProfileModalVisibility] = useState(false);
 
   const toggleProfileModal = () => {
+    setIsRotate(!isRotate);
     setProfileModalVisibility(!profileModalVisibility);
   };
 
   return (
     <>
-      {profileModalVisibility && <UserProfileModal />}
+      {profileModalVisibility && (
+        <UserProfileModal toggleVissiblity={toggleProfileModal} />
+      )}
       <HeaderStyle>
         <div className="header-inner">
           <div className="logo-wrapper">
@@ -50,9 +63,9 @@ export default function Header() {
           </div>
           <div className="header-right-btn-wrapper">
             <i className="fa-solid fa-bars small-screen-icon"></i>
-            {location.pathname.includes("dashboard") ? (
+            {token ? (
               <>
-                <div
+                {/* <div
                   className="shop-profile-notification-wrapper"
                   onClick={handleNotificationClick}
                 >
@@ -62,23 +75,51 @@ export default function Header() {
                       {notificationCount}
                     </div>
                   )}
-                </div>
-                <div className="user-profile-img-wrapper">
-                  {userData && userData.profileImage ? (
-                    <img
-                      src={userData?.profileImage}
-                      alt=""
-                      onClick={toggleProfileModal}
-                    />
+                </div> */}
+                <div
+                  className="user-profile-img-wrapper"
+                  onClick={toggleProfileModal}
+                >
+                  {userData &&
+                  userData?.profilePic &&
+                  !userData?.profilePic?.toString().includes("undefined") ? (
+                    <div
+                      style={{
+                        borderRadius: "50%",
+                        overflow: "hidden",
+                        height: "2rem",
+                        width: "2rem",
+                      }}
+                    >
+                      <img
+                        src={userData?.profilePic}
+                        alt=""
+                        onClick={toggleProfileModal}
+                      />
+                    </div>
                   ) : (
                     <div className="shop-profile-header-icon">
-                      <FaUserCircle onClick={toggleProfileModal} />
+                      <FaRegUser />
                     </div>
                   )}
+                  <span style={{ fontSize: "12px" }}>
+                    Hi, {userData?.name?.split(" ")[0]}
+                  </span>
+                  <span className="user-drop-down-icon">
+                    <MdKeyboardArrowDown
+                      style={{
+                        transform: isRotate ? "rotate(180deg)" : "rotate(0deg)",
+                        transition: "transform 0.3s ease-in-out",
+                      }}
+                    />
+                  </span>
                 </div>
-                {products ? (
+                <div className="cart-count">
+                  <CartCounter />
+                </div>
+                {/* {shopIdFromBackend.trim() ? (
                   <Link
-                    to={`/dashboard/shop-profile/${shopId}`}
+                    to={`/dashboard/shop-profile/${shopIdFromBackend}`}
                     className="header-right-signup-btn big-screen"
                   >
                     Go to Shop
@@ -90,87 +131,18 @@ export default function Header() {
                   >
                     Start Selling
                   </Link>
-                )}
+                )} */}
               </>
-            ) : location.pathname === "/" ? (
-              token ? (
-                <>
-                  <div
-                    className="shop-profile-notification-wrapper"
-                    onClick={handleNotificationClick}
-                  >
-                    <BsBell />
-                    {notificationCount > 0 && (
-                      <div className="notification-badge">
-                        {notificationCount}
-                      </div>
-                    )}
-                  </div>
-                  <div className="user-profile-img-wrapper">
-                    {userData && userData.profileImage ? (
-                      <img
-                        src={userData?.profileImage}
-                        alt=""
-                        onClick={toggleProfileModal}
-                      />
-                    ) : (
-                      <div className="shop-profile-header-icon">
-                        <FaUserCircle onClick={toggleProfileModal} />
-                      </div>
-                    )}
-                  </div>
-                  <Link
-                    to="/dashboard/shop-registration"
-                    className="header-right-signup-btn big-screen"
-                  >
-                    Start Selling
-                  </Link>
-                </>
-              ) : (
-                <>
-                  <>
-                    <Link
-                      to="/login"
-                      className="header-right-login-btn big-screen"
-                    >
-                      Login
-                    </Link>
-                    <Link
-                      to="/signup"
-                      className="header-right-signup-btn big-screen"
-                    >
-                      Sign Up
-                    </Link>
-                  </>
-                </>
-              )
             ) : (
               <>
-                <div
-                  className="shop-profile-notification-wrapper"
-                  onClick={handleNotificationClick}
-                >
-                  <BsBell />
-                  {notificationCount > 0 && (
-                    <div className="notification-badge">
-                      {notificationCount}
-                    </div>
-                  )}
-                </div>
-                <div className="user-profile-img-wrapper">
-                  {userData && userData.profileImage ? (
-                    <img src={userData?.profileImage} alt="" />
-                  ) : (
-                    <div className="shop-profile-header-icon">
-                      <FaUserCircle />
-                    </div>
-                  )}
-                </div>
+                <Link to="/login" className="header-right-login-btn big-screen">
+                  Login
+                </Link>
                 <Link
-                  to="/dashboard/start-selling"
+                  to="/signup"
                   className="header-right-signup-btn big-screen"
                 >
-                  Start Selling
+                  Sign Up
                 </Link>
               </>
             )}

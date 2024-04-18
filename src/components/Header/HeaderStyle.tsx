@@ -36,13 +36,23 @@ const HeaderStyle = styled.header`
     width: 6rem;
   }
   .user-profile-img-wrapper {
-    height: 4rem;
-    width: 4rem;
+    height: 2.5rem;
+    min-width: 2.5rem;
+    cursor: pointer;
+    display: flex;
+    gap: 0.2rem;
+    color: #000000;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.3s;
   }
 
+  .user-profile-img-wrapper:hover {
+    color: var(--orange-color);
+    transition: all 0.3s;
+  }
   .user-profile-img-wrapper img {
     max-width: 100%;
-    height: 100%;
     object-fit: contain;
   }
   .header-right-btn-wrapper {
@@ -94,7 +104,7 @@ const HeaderStyle = styled.header`
 
   .shop-profile-header-icon,
   .shop-profile-notification-wrapper {
-    font-size: 2rem;
+    font-size: 1.5rem;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -103,6 +113,18 @@ const HeaderStyle = styled.header`
   .shop-profile-notification-wrapper > *,
   .shop-profile-header-icon > * {
     cursor: pointer;
+  }
+
+  .user-drop-down-icon {
+    font-size: 1.5rem;
+    height: 15px;
+    width: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    // background-color: var(--orange-color);
+    stroke-width: 10;
+    drop-shadow: 10px 10px 10px red;
   }
   .notification-badge {
     position: absolute;
