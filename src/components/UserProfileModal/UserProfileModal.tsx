@@ -9,8 +9,6 @@ import {
 //media imports
 import editProfileIcon from "../../assets/user-profile-modal-assets/edit-profile-icon.png";
 import myShopIcon from "../../assets/user-profile-modal-assets/my-shop-icon.png";
-import cartIcon from "../../assets/user-profile-modal-assets/cart-icon.png";
-//import messagingIcon from "../../assets/user-profile-modal-assets/messaging-icon.png";
 import orderListIcon from "../../assets/user-profile-modal-assets/purchase_order_icon.png";
 import logouticon from "../../assets/user-profile-modal-assets/logout-icon.png";
 import { BsHeart } from "react-icons/bs";
@@ -30,7 +28,7 @@ interface userProfileProps {
 interface userState {
   user: userData;
 }
-const UserProfileModal = ({ toggleVissiblity }: userProfileProps) => {
+const UserProfileModal = ({ toggleVissiblity,} : userProfileProps) => {
   const token = localStorage.getItem("token");
   const handleLogout = () => {
     toggleVissiblity();
@@ -38,7 +36,7 @@ const UserProfileModal = ({ toggleVissiblity }: userProfileProps) => {
     localStorage.clear();
     return;
   };
-
+  
   // const { shopId } = useParams();
   // if(shopId) return null
   const userData = useSelector((state: RootState) => state.user);
@@ -94,9 +92,9 @@ const UserProfileModal = ({ toggleVissiblity }: userProfileProps) => {
               }}
             >
               {userData.isAdmin ? (
-                <FaUserCircle style={{ fontSize: "2rem" }} />
+                <FaUserCircle style={{ fontSize: "2rem", color: "#000000" }} />
               ) : (
-                <FaUser style={{ fontSize: "2rem" }} />
+                <FaUser style={{ fontSize: "2rem", color: "#000000" }} />
               )}
             </div>
           )}
@@ -104,7 +102,7 @@ const UserProfileModal = ({ toggleVissiblity }: userProfileProps) => {
         </div>
         <div className="user-profile-modal-user-info-container">
           <p className="user-profile-modal-user-name">
-            {userName.trim() ? userName : "userName"}
+            {userName.trim() ? userName.split(" ")[0] : "userName"}
           </p>
           <Link
             to={
@@ -112,7 +110,7 @@ const UserProfileModal = ({ toggleVissiblity }: userProfileProps) => {
                 ? "/admin/dashboard/edit-profile"
                 : "/dashboard/user/edit-profile"
             }
-            onClick={toggleVissiblity}
+            onClick={()=>toggleVissiblity()}
             style={{
               fontSize: "0.7rem",
               fontWeight: "500",
@@ -134,7 +132,7 @@ const UserProfileModal = ({ toggleVissiblity }: userProfileProps) => {
                 ? "/admin/dashboard/edit-profile"
                 : "/dashboard/user/edit-profile"
             }
-            onClick={toggleVissiblity}
+              onClick={toggleVissiblity}
           >
             <div className="user-profile-modal-link-text-and-icon-container">
               <img
@@ -148,7 +146,7 @@ const UserProfileModal = ({ toggleVissiblity }: userProfileProps) => {
           {shopIdFromBackend?.trim() && (
             <Link
               to={`/dashboard/shop-profile/${shopIdFromBackend}`}
-              onClick={toggleVissiblity}
+             onClick={toggleVissiblity}
             >
               <div className="user-profile-modal-link-text-and-icon-container">
                 <img
@@ -163,16 +161,10 @@ const UserProfileModal = ({ toggleVissiblity }: userProfileProps) => {
 
         {!userData?.isAdmin && (
           <div className="user-profile-modal-link-container">
-            <Link to={token ? "/user/my-cart" : "/"} onClick={toggleVissiblity}>
-              <div className="user-profile-modal-link-text-and-icon-container">
-                <img src={cartIcon} className="user-profile-modal-link-icon" />
-                <p className="user-profile-modal-link-text">Cart</p>
-              </div>
-            </Link>
 
             <Link
               to={token ? "/user/my-orders" : "/"}
-              onClick={toggleVissiblity}
+                 onClick={toggleVissiblity}
             >
               <div className="user-profile-modal-link-text-and-icon-container">
                 <img
@@ -185,7 +177,7 @@ const UserProfileModal = ({ toggleVissiblity }: userProfileProps) => {
 
             <Link
               to={token ? "/user/my-wishlist" : "/login"}
-              onClick={toggleVissiblity}
+                 onClick={toggleVissiblity}
             >
               <div className="user-profile-modal-link-text-and-icon-container">
                 <BsHeart
@@ -211,3 +203,4 @@ const UserProfileModal = ({ toggleVissiblity }: userProfileProps) => {
 };
 
 export default UserProfileModal;
+

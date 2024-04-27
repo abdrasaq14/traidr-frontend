@@ -8,14 +8,22 @@ interface ButtonProps {
   productId: string | null | undefined;
   isInWishList: boolean;
   onClickAction: () => void;
+  isMouseEnter: () => void;
+  isMouseLeave: () => void;
+  children?: {
+    toolTip: React.ReactNode;
+  };
 }
 const MiniAddToWishListButton = ({
   productId,
   isInWishList,
   onClickAction,
+  isMouseEnter,
+  isMouseLeave,
+  children,
 }: ButtonProps) => {
   // const [isInWishList, setIsInWishList] = useState<boolean>(false)
-
+const { toolTip } = children as { toolTip: React.ReactNode };
   const handleAdd = async () => {
     const info = { currentProductId: productId };
     try {
@@ -48,18 +56,20 @@ const MiniAddToWishListButton = ({
   return (
     <>
       {!isInWishList && (
-        <MiniAddToWishListContainer onClick={handleAdd}>
+        <MiniAddToWishListContainer onClick={handleAdd} onMouseEnter={isMouseEnter} onMouseLeave={isMouseLeave}>
           <BsHeart size={20} className="add-to-wishlist-icon" />
+          {toolTip}
         </MiniAddToWishListContainer>
       )}
 
       {isInWishList && (
-        <MiniAddToWishListContainer onClick={handleDelete}>
+        <MiniAddToWishListContainer onClick={handleDelete} onMouseEnter={isMouseEnter} onMouseLeave={isMouseLeave}>
           <BsHeartFill
             size={20}
             color="var(--orange-color)"
             className="add-to-wishlist-icon"
           />
+          {toolTip}
         </MiniAddToWishListContainer>
       )}
     </>

@@ -1,17 +1,10 @@
 import styled from "styled-components";
 
-export const DescriptionWholePageContainer = styled.div`
-.back-button-container{
-    /* margin-bottom: 5vh; */
-    /* border: 1px solid blue;
-    height: 0.1vh; */
-}
-`
 
 export const DescriptionContainer = styled.div`
-    display:block;
-    margin-top: 5vh;
-    padding: 0 5rem;
+    display: flex;
+    flex-direction: column;
+    padding: 0 2rem;
 `
 
 export const DescriptionTop = styled.div`

@@ -5,7 +5,7 @@ import CartCounter from "../CartCounter/CartCounter.tsx";
 import "./HeaderStyle.tsx";
 import HeaderStyle from "./HeaderStyle.tsx";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FaRegUser } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { MdKeyboardArrowDown } from "react-icons/md";
@@ -15,41 +15,39 @@ import UserProfileModal from "../UserProfileModal/UserProfileModal.tsx";
 interface userState {
   user: userDataInterface;
 }
-export default function Header() {
-  // const reviewer = useSelector((state: userDataInterface) => state.userId);
 
-  // const [notificationCount, setNotificationCount] = useState(0);
+interface HeaderProps {
+  show?: () => void;
+}
+export default function Header({ show }: HeaderProps) {
   const token = localStorage.getItem("token");
-  // const isSeller = useSelector((state: userState) => state.user.isSeller);
-  // const [shopIdFromBackend, setShopIdFromBackend] = useState("");
   const [isRotate, setIsRotate] = useState(false);
-  // useEffect(() => {
-  //   if (isSeller) {
-  //     fetchUserShopDetails().then((res) => {
-  //       setShopIdFromBackend(res);
-  //     });
-  //   }
-  // });
-  // const handleNotificationClick = () => {
-  //   setNotificationCount(0);
-  // };
   const userData = useSelector((state: userState) => state.user);
-  // useEffect(() => {
-
-  // }, []);
-
+const modalRef = useRef<HTMLDivElement | null>(null);
   const [profileModalVisibility, setProfileModalVisibility] = useState(false);
-
-  const toggleProfileModal = () => {
-    setIsRotate(!isRotate);
+  
+ const toggleProfileModal = (isOutsideClick = false) => {
+    if (!isOutsideClick) {
+      setIsRotate(!isRotate);
+    }
     setProfileModalVisibility(!profileModalVisibility);
-  };
+ };
+
+ useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
+        toggleProfileModal(true); 
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+ }, [toggleProfileModal]); 
+
 
   return (
     <>
-      {profileModalVisibility && (
-        <UserProfileModal toggleVissiblity={toggleProfileModal} />
-      )}
       <HeaderStyle>
         <div className="header-inner">
           <div className="logo-wrapper">
@@ -62,24 +60,28 @@ export default function Header() {
             </Link>
           </div>
           <div className="header-right-btn-wrapper">
-            <i className="fa-solid fa-bars small-screen-icon"></i>
+            {!token && (
+              <i
+                className="fa-solid fa-bars small-screen-icon"
+                style={{ cursor: "pointer" }}
+                onClick={show}
+              ></i>
+            )}
             {token ? (
               <>
-                {/* <div
-                  className="shop-profile-notification-wrapper"
-                  onClick={handleNotificationClick}
-                >
-                  <BsBell />
-                  {notificationCount > 0 && (
-                    <div className="notification-badge">
-                      {notificationCount}
-                    </div>
-                  )}
-                </div> */}
                 <div
                   className="user-profile-img-wrapper"
-                  onClick={toggleProfileModal}
+                  onClick={(event) => {
+                    event.stopPropagation()
+                    toggleProfileModal(false)
+                  }}
+                  style={{ position: "relative" }}
                 >
+                  {profileModalVisibility && (
+                    <div ref={modalRef}>
+                      <UserProfileModal toggleVissiblity={()=>toggleProfileModal(false)} />
+                    </div>
+                  )}
                   {userData &&
                   userData?.profilePic &&
                   !userData?.profilePic?.toString().includes("undefined") ? (
@@ -88,13 +90,13 @@ export default function Header() {
                         borderRadius: "50%",
                         overflow: "hidden",
                         height: "2rem",
-                        width: "2rem",
+                        width: "2rem"
                       }}
                     >
                       <img
                         src={userData?.profilePic}
                         alt=""
-                        onClick={toggleProfileModal}
+                        onClick={()=>toggleProfileModal(false)}
                       />
                     </div>
                   ) : (
@@ -109,7 +111,7 @@ export default function Header() {
                     <MdKeyboardArrowDown
                       style={{
                         transform: isRotate ? "rotate(180deg)" : "rotate(0deg)",
-                        transition: "transform 0.3s ease-in-out",
+                        transition: "transform 0.3s ease-in-out"
                       }}
                     />
                   </span>
@@ -117,21 +119,6 @@ export default function Header() {
                 <div className="cart-count">
                   <CartCounter />
                 </div>
-                {/* {shopIdFromBackend.trim() ? (
-                  <Link
-                    to={`/dashboard/shop-profile/${shopIdFromBackend}`}
-                    className="header-right-signup-btn big-screen"
-                  >
-                    Go to Shop
-                  </Link>
-                ) : (
-                  <Link
-                    to="/dashboard/shop-registration"
-                    className="header-right-signup-btn big-screen"
-                  >
-                    Start Selling
-                  </Link>
-                )} */}
               </>
             ) : (
               <>

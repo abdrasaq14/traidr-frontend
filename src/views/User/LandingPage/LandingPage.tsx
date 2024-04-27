@@ -14,12 +14,12 @@ import { fetchAllProducts } from "../../../api/product";
 import AllProductsCard from "../../../components/ProductsCard/AllProductsCard";
 import { AllProductsWrapper } from "../../../components/ProductsCard/AllProductsStyle";
 import dummyProducts from "../../../assets/products/dummy.png";
-
+import MobilePopUp from "../../../components/MobileScreenPopUp/MobilePopUp";
 import { Link } from "react-router-dom";
 
 export default function LandingPage() {
   const [products, setProducts] = useState<shopProductsInterface[]>();
-
+const [showMobile, setShowMobile] = useState(false);
   // fetching all products
   useEffect(() => {
     fetchAllProducts().then((res) => {
@@ -27,9 +27,13 @@ export default function LandingPage() {
     });
   }, []);
 
+  const handleShowMobile = () => { 
+    setShowMobile(!showMobile);
+  }
   return (
     <>
-      <Header />
+      {<MobilePopUp show={showMobile} handleShowMobile={handleShowMobile} />}
+      <Header show={handleShowMobile} />
       {/* <PopUpMessageWrapper>
         <div className="icon-wrapper">
           <i className="fa-regular fa-circle-check success-icon"></i>

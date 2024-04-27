@@ -3,27 +3,29 @@ import { IoIosTimer } from "react-icons/io";
 import { FaLocationDot } from "react-icons/fa6";
 import { ChangeEvent, useEffect, useState } from "react";
 import "./TopDescription.css";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { FaUserCircle } from "react-icons/fa";
 import { MdOutlineChat } from "react-icons/md";
-import { shopProductsInterface, ShopOwnerDetails } from "../../interfaces/shopInterfaces";
+import {
+  shopProductsInterface,
+  ShopOwnerDetails
+} from "../../interfaces/shopInterfaces";
 // import { useParams } from "react-router-dom";
 import AddToCartButton from "../AddToCartButton/AddToCartButton";
 import AddToWishListButton from "../AddToWishListButton/AddToWishListButton";
 import { fetchShopOwnerDetails } from "../../api/shop";
 
 function TopDescription({ ...props }: shopProductsInterface) {
-  const [shopOwnerDetails, setShopOwnerDetails] = useState<ShopOwnerDetails>()
+  const [shopOwnerDetails, setShopOwnerDetails] = useState<ShopOwnerDetails>();
   const [selectedOption, setSelectedOption] = useState("");
 
-  useEffect(()=>{
-    fetchShopOwnerDetails(props.shopId).then((res:ShopOwnerDetails)=>{
-    if(res){
-      setShopOwnerDetails(res)
-    }
-  })
-
-})
+  useEffect(() => {
+    fetchShopOwnerDetails(props.shopId).then((res: ShopOwnerDetails) => {
+      if (res) {
+        setShopOwnerDetails(res);
+      }
+    });
+  });
 
   const handleSelectChange = (e: ChangeEvent<HTMLSelectElement>) => {
     setSelectedOption(e.target.value);
@@ -41,12 +43,40 @@ function TopDescription({ ...props }: shopProductsInterface) {
     <div>
       <section className="display">
         <div className="top-description-page-wrapper">
-          <ul className="home-search">
-            <Link to="/" className="description-page-link">Home /</Link>
-            <Link to="/dashboard/" className="description-page-link">Search /</Link>
-            <Link to="" className="description-page-link">{props.productCategory}/</Link>
-            <Link to={`/dashboard/shop/${props.shopId}`} className="description-page-link">{props.shopName}</Link>
-            
+          <ul className="home-search" style={{listStyleType: "none"}}>
+            <li>
+              <NavLink
+                to="/"
+                className={({ isActive }) =>
+                  `description-page-link ${isActive ? "active-link" : ""}`
+                }
+              >
+                Home
+              </NavLink>
+              <span style={{fontSize: "0.8rem"}}>/</span>
+            </li>
+            <li>
+              <NavLink
+                to={`/dashboard/${props.productCategory}`}
+                className={({isActive}) =>
+                  `description-page-link ${isActive ? "active-link" : ""}`
+                }
+              >
+                {props.productCategory}
+              </NavLink>
+              <span style={{fontSize: "0.8rem"}}>/</span>
+            </li>
+            <li>
+              <NavLink
+                to={`/dashboard/description/${props.productId}`}
+                className={({isActive}) =>
+                  `description-page-link ${isActive ? "active-link" : ""}`
+                }
+              >
+                {" "}
+                {props.productTitle}{" "}
+              </NavLink>
+            </li>
           </ul>
 
           <div className="product-description-image-wrapper">
@@ -63,9 +93,12 @@ function TopDescription({ ...props }: shopProductsInterface) {
             <div>
               <p className="views-time"> 3 Views in the last 2 minutes </p>
               <p className="price">₦{props.productPrice.toLocaleString()}</p>
-            <Link to={`/dashboard/shop/${props.shopId}`} className="description-page-link">
-            <p className="store">{props.shopName}</p>
-              </Link> 
+              <Link
+                to={`/dashboard/shop/${props.shopId}`}
+                className="description-page-link"
+              >
+                <p className="store">{props.shopName}</p>
+              </Link>
               <p className="hens-product">{props.productTitle}</p>
             </div>
 
@@ -110,14 +143,19 @@ function TopDescription({ ...props }: shopProductsInterface) {
                 toggleVisibility={toggleQuantityModal}
               />
               <p>
-                <AddToWishListButton productId={currentProductId}/>
+                <AddToWishListButton productId={currentProductId} />
               </p>
             </div>
 
             <div className="user-info">
-            
-               {shopOwnerDetails?.profilePic? <img src={shopOwnerDetails.profilePic} className="shop-owner-profile-pic"/>:
-              <FaUserCircle style={{ width: "5rem", height: "5rem" }} />}
+              {shopOwnerDetails?.profilePic ? (
+                <img
+                  src={shopOwnerDetails.profilePic}
+                  className="shop-owner-profile-pic"
+                />
+              ) : (
+                <FaUserCircle style={{ width: "5rem", height: "5rem" }} />
+              )}
 
               <div className="data-group">
                 <p>{props.shopOwner}</p>

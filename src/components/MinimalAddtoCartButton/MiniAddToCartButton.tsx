@@ -7,25 +7,30 @@ import { useState } from 'react'
 
 
 interface ButtonProps{
-      productId: string| undefined|null;
+  productId: string | undefined | null;
+  isMouseEnter: () => void;
+  isMouseLeave: () => void;
+  children?: {
+    toolTip: React.ReactNode;
+  }
     //   toggleVisibility: () => void;
   }
 
-const MiniAddToCartButton = ({productId}: ButtonProps) => {
+const MiniAddToCartButton = ({productId, isMouseEnter, isMouseLeave, children}: ButtonProps) => {
+const {toolTip} = children as { toolTip: React.ReactNode };
+const [quantityModalVisibility, setQuantityModalVisibility] = useState(false);
 
-    const [quantityModalVisibility, setQuantityModalVisibility] = useState(false);
-
-    const toggleQuantityModal = () => {
-          setQuantityModalVisibility(!quantityModalVisibility);
-    }
+const toggleQuantityModal = () => {
+  setQuantityModalVisibility(!quantityModalVisibility);
+}
 
 
   return (
-    <MiniAddToCartContainer>
+    <MiniAddToCartContainer onMouseEnter={isMouseEnter} onMouseLeave={isMouseLeave}>
     {!quantityModalVisibility && (
-        <BsBagPlus size={22} onClick={toggleQuantityModal} className="add-to-cart-icon"/>
+        <BsBagPlus size={20} onClick={toggleQuantityModal} className="add-to-cart-icon"/>
     ) }
-
+{toolTip}
     <div className="quantity-modal">{quantityModalVisibility && <AddQuantityModal productId={productId} toggleVisibility={toggleQuantityModal}/>}</div>
     </MiniAddToCartContainer>
   )

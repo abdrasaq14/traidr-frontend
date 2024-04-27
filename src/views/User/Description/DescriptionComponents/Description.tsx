@@ -2,8 +2,7 @@ import {
   DescriptionContainer,
   // DescriptionTop,
   DescriptionMain,
-  DescriptionAdverts,
-  DescriptionWholePageContainer
+  DescriptionAdverts
 } from "../DescriptionStyles/Description.styled";
 import Header from "../../../../components/Header/Header";
 import BackButton from "../../../../components/BackButton/BackButton";
@@ -14,7 +13,6 @@ import { shopProductsInterface } from "../../../../interfaces/shopInterfaces";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { fetchProductsById } from "../../../../api/product";
-
 
 export default function Description() {
   const { productId } = useParams();
@@ -27,9 +25,11 @@ export default function Description() {
     });
   }, [productId]);
   return (
-    <DescriptionWholePageContainer>
+    <>
       <Header />
-      <div className="back-button-container"><BackButton linkTo="/dashboard"/></div>
+      <div className="back-button-container">
+        <BackButton linkTo="/dashboard" />
+      </div>
       <DescriptionContainer>
         {products && (
           <>
@@ -55,9 +55,6 @@ export default function Description() {
           </>
         )}
       </DescriptionContainer>
-      {/* <DashboardContainer>
-            <AllProducts shopId={shopId!} />
-        </DashboardContainer> */}
-    </DescriptionWholePageContainer>
+    </>
   );
 }
